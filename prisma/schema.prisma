@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Salary {
+  id                  String   @id @default(uuid())
+  companyName         String   // Normalized (lowercase, trimmed)
+  originalCompanyName String   // Original input (e.g., "Google LLC")
+  role                String   // e.g., "Software Engineer"
+  levelStandardized   String   // e.g., "L4"
+  location            String
+  experienceYears     Float
+  baseSalary          Float
+  bonus               Float    @default(0)
+  stock               Float    @default(0)
+  totalCompensation   Float    // Computed: base + bonus + stock
+  confidenceScore     Int      @default(50) // 1-100 scale
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([companyName])
+  @@index([role])
+  @@index([levelStandardized])
+}
