@@ -51,7 +51,8 @@ export default function IngestPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to submit data");
+        console.error("Validation Details:", data.details);
+        throw new Error(data.details ? JSON.stringify(data.details) : data.error || "Failed to submit data");
       }
 
       setSuccess(true);
